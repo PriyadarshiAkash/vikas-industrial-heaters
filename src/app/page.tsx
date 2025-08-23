@@ -54,7 +54,7 @@ export default function HeaterFactorySite(){
   const [contact, setContact] = useState({ name: "", email: "", phone: "", message: "" });
 
   const filtered = useMemo(() => {
-    let list = PRODUCTS.filter(p => 
+    const list = PRODUCTS.filter(p => 
       (cat === "All" || p.category === cat) &&
       (mat === "All" || p.material === mat) &&
       (volt === "All" || String(p.voltage) === volt) &&
