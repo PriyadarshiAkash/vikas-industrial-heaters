@@ -1,0 +1,13 @@
+# Next.js
+.next/
+node_modules/
+
+# Local Environment
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# System files
+.DS_Store
+*.log

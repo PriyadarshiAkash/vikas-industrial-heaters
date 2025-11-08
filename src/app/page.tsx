@@ -52,9 +52,12 @@ export default function HeaterFactorySite(){
   const [cart, setCart] = useLocalStorage("hf_cart", []);
   const [lastOrder, setLastOrder] = useLocalStorage("hf_last_order", null);
   const [contact, setContact] = useState({ name: "", email: "", phone: "", message: "" });
+  // 👇 ADDED THESE TWO LINES TO FIX THE HYDRATION ERROR
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => { setIsClient(true) }, []);
 
   const filtered = useMemo(() => {
-    const list = PRODUCTS.filter(p => 
+    let list = PRODUCTS.filter(p => 
       (cat === "All" || p.category === cat) &&
       (mat === "All" || p.material === mat) &&
       (volt === "All" || String(p.voltage) === volt) &&
@@ -106,18 +109,16 @@ export default function HeaterFactorySite(){
       ].filter(Boolean).join("\n")
     );
     // Change this target number to your sales/WhatsApp number
-    const whatsappNumber = "918223097768"; // e.g., 91 + 10-digit mobile
-    window.open(`https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${summary}`, "_blank");
-
+    const whatsappNumber = "917518959561"; // e.g., 91 + 10-digit mobile
+    window.open(`https://wa.me/${whatsappNumber}?text=${summary}`, "_blank");
     alert(`Order placed! Your Order ID is ${orderId}. We've opened WhatsApp with order details.`);
   }
 
   function submitContact(){
     if (!contact.name || !contact.phone || !contact.message){ alert("Please fill Name, Phone, and Message."); return; }
     const text = encodeURIComponent(`Inquiry from ${contact.name}\nPhone: ${contact.phone}\nEmail: ${contact.email||'-'}\n\n${contact.message}`);
-    const whatsappNumber = "918595432960"; // e.g., 91 + 10-digit mobile
-    window.open(`https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${summary}`, "_blank");
-
+    const whatsappNumber = "918595432960";
+    window.open(`https://wa.me/${whatsappNumber}?text=${text}`, "_blank");
   }
 
   return (
@@ -127,7 +128,7 @@ export default function HeaterFactorySite(){
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="h-6 w-6" />
-            <span className="font-bold text-xl">Priyadarshi Heaters</span>
+            <span className="font-bold text-xl">Vikas Industrial Heaters</span>
             <Badge variant="secondary" className="ml-2">ISO 9001:2015</Badge>
           </div>
           <div className="hidden md:flex items-center gap-2 w-[40%]">
@@ -144,9 +145,9 @@ export default function HeaterFactorySite(){
             <a href="mailto:aakashpriyadarshi2002@gmail.com"><Button variant="outline"><Mail className="h-4 w-4 mr-2"/>Email</Button></a>
             <Sheet>
               <SheetTrigger asChild>
-                <Button className="relative"><ShoppingCart className="h-4 w-4 mr-2"/>Cart {cart.length>0 && (<Badge className="ml-2" variant="secondary">{cart.reduce((s,i)=>s+i.qty,0)}</Badge>)}</Button>
+                <Button className="relative"><ShoppingCart className="h-4 w-4 mr-2"/>Cart {isClient &&cart.length>0 && (<Badge className="ml-2" variant="secondary">{cart.reduce((s,i)=>s+i.qty,0)}</Badge>)}</Button>
               </SheetTrigger>
-              <SheetContent className="w-full sm:max-w-md">
+              <SheetContent className="w-full sm:max-w-md overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>Your Cart</SheetTitle>
                 </SheetHeader>
@@ -358,7 +359,7 @@ export default function HeaterFactorySite(){
           </CardHeader>
           <CardContent className="grid gap-3">
             <div className="grid sm:grid-cols-2 gap-3">
-              <div>
+              <div> 
                 <Label>Name*</Label>
                 <Input value={contact.name} onChange={e=>setContact({...contact, name:e.target.value})} placeholder="Your name"/>
               </div>
@@ -402,25 +403,25 @@ export default function HeaterFactorySite(){
           <CardContent className="text-sm space-y-3">
             <div className="flex items-start gap-3"><MapPin className="h-5 w-5 mt-0.5"/>
               <div>
-                Priyadarshi Heaters Pvt. Ltd.<br/>
-                Plot 12, Industrial Area, Bawana<br/>
-                Delhi, Delhi – 411001, India
+                Vikas Industrial Heaters<br/>
+                F-148, DSIIDC Industrial Area, Bawana Sector 5<br/>
+                Delhi – 110039, India
               </div>
             </div>
             <div className="grid sm:grid-cols-2 gap-3">
               <div>
                 <div className="text-slate-500">Sales</div>
                 <a className="underline" href="tel:+919999999999">+91 88003 41319</a><br/>
-                <a className="underline" href="mailto:sales@patilheaters.com">sales@patilheaters.com</a>
+                <a className="underline" href="mailto:sales@patilheaters.com">kapildev54444@gmail.com</a>
               </div>
               <div>
                 <div className="text-slate-500">Support</div>
                 <a className="underline" href="tel:+918888888888">+91 85954 32960</a><br/>
-                <a className="underline" href="mailto:support@patilheaters.com">support@patilheaters.com</a>
+                <a className="underline" href="mailto:support@patilheaters.com">aakashpriyadarshi2002@gmail.com</a>
               </div>
             </div>
             <div className="rounded-xl overflow-hidden border">
-              <iframe title="map" className="w-full h-64" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=MIDC%20Pune&output=embed"></iframe>
+              <iframe title="map" className="w-full h-64" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=MIDC%20VikasElectricalsandHeatingElementsBawanaSector5&output=embed"></iframe>
             </div>
             <div className="text-xs text-slate-500">* Replace placeholder numbers/emails and map pin with your actual details.</div>
           </CardContent>
@@ -431,7 +432,7 @@ export default function HeaterFactorySite(){
       <footer className="border-t bg-white">
         <div className="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-6 text-sm">
           <div>
-            <div className="font-bold text-lg">Priyadarshi Heaters</div>
+            <div className="font-bold text-lg">Vikas Industrial Heaters</div>
             <p className="text-slate-600 mt-2">Manufacturing immersion, tubular, band and cartridge heaters for industrial and OEM applications since 1998.</p>
           </div>
           <div>
@@ -445,12 +446,12 @@ export default function HeaterFactorySite(){
           </div>
           <div>
             <div className="font-semibold">Order Status</div>
-            {lastOrder ? (
+            {isClient && lastOrder ? (
               <div className="mt-2 p-3 rounded-xl bg-slate-50 border">
                 <div className="text-slate-500">Last Order</div>
                 <div className="font-semibold">{lastOrder.orderId}</div>
                 <div className="text-xs text-slate-500">Amount: {inr(lastOrder.amount)}</div>
-                <a className="underline text-xs" target="_blank" href={`https://wa.me/919999999999?text=${encodeURIComponent("Order status update for "+lastOrder.orderId)}`}>Ping us on WhatsApp</a>
+                <a className="underline text-xs" target="_blank" href={`https://wa.me/917518959561?text=${encodeURIComponent("Order status update for "+lastOrder.orderId)}`}>Ping us on WhatsApp</a>
               </div>
             ) : (
               <p className="text-slate-600 mt-2">Add items to cart and place your first order.</p>
@@ -569,4 +570,3 @@ function OrderDialog({ onSubmit, disabled }){
     </Dialog>
   );
 }
- 
