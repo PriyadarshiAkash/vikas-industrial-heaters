@@ -57,7 +57,7 @@ export default function HeaterFactorySite(){
   useEffect(() => { setIsClient(true) }, []);
 
   const filtered = useMemo(() => {
-    let list = PRODUCTS.filter(p => 
+    const list = PRODUCTS.filter(p => 
       (cat === "All" || p.category === cat) &&
       (mat === "All" || p.material === mat) &&
       (volt === "All" || String(p.voltage) === volt) &&
